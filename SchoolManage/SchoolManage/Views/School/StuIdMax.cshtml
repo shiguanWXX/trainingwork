@@ -1,0 +1,58 @@
+﻿@model SchoolEFManager.ViewModels.StudentViewModel
+
+@{
+    ViewBag.Title = "StuIdMax";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>StuIdMax</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StuName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sex)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClasssId)
+        </th>
+        <th></th>
+    </tr>
+
+
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.StuName)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Sex)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Age)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Department)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.ClasssId)
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>*@
+    </tr>
+
+
+</table>

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<NewsManage.ViewModels.NewsViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>新闻列表</h2>
+
+<p>
+    @{
+        Html.RenderAction("GetAddNewLink");
+    } 
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/Login/Logout">注销</a>
+</p>
+@using (Html.BeginForm("Index", "News", FormMethod.Post))
+{
+    @Html.TextBox("NewTitle", "", new { style = "width:100%; height: 34px;background-color: #ffffff; border: 1px solid #cccccc;border-radius: 4px;" }) 
+    <input type="submit" value="查询" onclick="IsValid() " class="btn btn-default navbar-btn" />
+}
+<br/>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NewsId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NewsName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NewsContent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RealName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NewsId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NewsName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NewsContent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RealName)
+        </td>
+        <td >
+            @Html.ActionLink("修改", "UpdateNews", "News", new{id= item.NewsId },new {disabled= item.Disabled })|
+            @*@Html.ActionLink("Details", "Details", "News",new{id=item.NewsId}, new { disabled = item.Disabled }) |*@
+            @Html.ActionLink("删除", "DeteleNews", "News",new{ id=item.NewsId }, new { disabled = item.Disabled ,onclick= "return confirms()" })
+        </td>
+    </tr>
+}
+
+</table>
+@*@{
+    Html.RenderPartial("Footer");
+}*@

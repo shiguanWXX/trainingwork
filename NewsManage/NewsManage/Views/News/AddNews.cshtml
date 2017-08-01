@@ -1,0 +1,99 @@
+﻿@model NewsManage.Models.News
+
+@{
+    ViewBag.Title = "新增新闻";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
+}
+
+@section script
+{
+    <script type="text/javascript">
+        $(function() {
+            // 在键盘按下并释放及提交后验证提交表单
+            $("#addnews-form").validate({
+                rules: {
+                    NewsContent: "required",
+                    NewsName: {
+                        required: true,
+                        maxlength: 35,
+                        //异步验证
+                        remote: {
+                            url: "/News/CheckNewsName", //后台数据处理地址
+                            type: "post", //数据发送的方式
+                            data: { //要传递的数据
+                                newsName: function() {
+                                    return $("#NewsName").val();
+                                }
+                            },
+                            dataType: "json" //接受数据集的方式
+                            //dataFilter: function (data, type) {
+                            //    alert(data);
+                            //    if (data["check"] === true) {
+                            //        return true;
+                            //    } else {
+                            //        return false;
+                            //    }
+
+                            //}
+                        }
+                    }
+                },
+                messages: {
+                    NewsContent: "请输入新闻内容",
+                    NewsName: {
+                        required: "请输入新闻标题",
+                        maxlength: "标题不能超过35个字",
+                        remote:"新闻标题不可用"
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+@using (Html.BeginForm("AddNews", "News", FormMethod.Post, new { id="addnews-form",name= "addnews-form" }))
+    {
+        @Html.AntiForgeryToken()
+        
+        <div class="form-horizontal">
+            <h4>News</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewsName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NewsName, new { htmlAttributes = new { @class = "form-control", required=true } })
+                    @Html.ValidationMessageFor(model => model.NewsName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewsContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.NewsContent, new { @class = "form-control", cols = "60", rows = "10",required=true })
+                    @*@Html.EditorFor(model => model.NewsContent, new {htmlAttributes = new {@class = "form-control"}})*@
+                    @Html.ValidationMessageFor(model => model.NewsContent, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            @*<div class="form-group">
+        @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+    
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="新增" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+    
+    <div>
+        @Html.ActionLink("返回新闻列表", "Index")
+    </div>
+@*</body>
+</html>*@

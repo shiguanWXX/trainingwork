@@ -1,0 +1,88 @@
+﻿@model NewsManage.Models.User
+<a href="javascript:void(0)" onclick="newInfo()">新增</a>
+<table id="usertable" class="display" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>用户Id</th>
+        <th>用户账号</th>
+        <th>用户姓名</th>
+        <th>用户角色</th>
+        <th>部门Id</th>
+        <th>部门名称</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+</table>
+@*新增窗口内容*@
+@*@using (Html.BeginForm())
+{*@
+<form id="user-form">
+    <div class="modal fade" id="myUsers" tabindex="-1" role="dialog" aria-labelledby="myUsersLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myUsersLabel">新增</h4>
+                </div>
+                <div class="modal-body" id="addUser">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Account)
+                        @* <div class="col-md-10">*@
+                        @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", required = true } })
+                        @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                        @* </div> *@
+                        @*<label for="Account">用户名</label>
+                            <input type="text" name="Account" class="form-control" id="Account" placeholder="用户名">*@
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RealName)
+                        @Html.EditorFor(model => model.RealName, new { htmlAttributes = new { @class = "form-control", required = true } })
+                        @Html.ValidationMessageFor(model => model.RealName, "", new { @class = "text-danger" })
+                        @*<label for="RealName">真实姓名</label>*@
+                        @*<textarea name="RealName" id="RealName" placeholder="新闻内容" class="form-control" clos="100" rows="5" warp="virtual"></textarea>
+                            <input type="text" name="RealName" class="form-control" id="RealName" placeholder="真实姓名">*@
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password)
+
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", required = true })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+                        @*<label for="Password">密码</label>
+                            <input type="text" name="Password" class="form-control" id="Password" placeholder="密码">*@
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Role)
+
+                        @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control", required = true } })
+                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+
+                        @*<label for="Role">角色</label>
+                            <input type="text" name="Role" class="form-control" id="Role" placeholder="角色">*@
+                    </div>
+                    @*<div class="form-group">
+                        @Html.LabelFor(model => model.DepartId , htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.DepartId, new { htmlAttributes = new { @class = "form-control", required=true } })
+                            @Html.ValidationMessageFor(model => model.DepartId, "", new { @class = "text-danger" })
+                        </div>
+                        @*<label for="DepartId">部门</label>
+                        <select name="DepartId" id="DepartId" class="form-control" placeholder="部门"></select>*@
+                    @*</div>*@
+                    @*<div class="form-group">*@
+                    @Html.Hidden("DepartId")
+                    @Html.Hidden("UserId")
+                    @*  </div> *@
+                </div>
+
+                <div class="modal-footer">
+                    <input type="reset" name="reset" style="display: none;" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="this.form.reset(); "><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="btn_submit" class="btn btn-primary" onclick="SaveUser()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @* } *@
+</form>

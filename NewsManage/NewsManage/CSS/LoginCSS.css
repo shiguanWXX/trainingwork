@@ -1,0 +1,31 @@
+﻿body {
+}
+#lg {
+    width: 500px;
+    height: 500px;
+    margin-top: 120px;
+    margin-left: 750px;
+
+}
+table tr {
+    height: 60px;
+}
+table tr td {
+    text-align: left;
+}
+#Account {
+    height: 35px;
+    width: 200px;
+}
+#Password {
+    width: 200px;
+    height: 35px;
+}
+td #sublg {
+    text-align: center;
+}
+#sublg {
+    height: 32px;
+    width: 50px;
+    text-align: center;
+}

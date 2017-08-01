@@ -1,0 +1,102 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetTable</title>
+    @*<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />*@
+    <link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
+    @*<link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />*@
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" class="init">
+
+        $(document).ready(function () {
+            @*var url = '@Html.Action("GetTable","News")';*@
+            $("#newstable").dataTable({
+                "columns": [
+                    { "data": "NewsId" },
+                    { "data": "NewsName" },
+                    { "data": "NewsContent" },
+                    { "data": "RealName" }
+                ],
+                //"columnDefs": [{
+                //    "aTargets": [4],
+                //    "data": "NewsId",
+                //    "render":function(data, type, full) {
+                //        return "<a class='update' href='News/UpdateNews/'>编辑</a>|<a class='update' href='News/DeteleNews'>删除</a>";
+                //    }
+                //}],
+                "bProcessing": false,
+                "bServerSide": true,
+                "sAjaxSource": "GetTable",
+                "sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+                drawCallback: function(backSettings) {
+                },
+                "fnServerData": function(sSource, aoData, fnCallback) {
+                    var data = {};
+                    alert(JSON.stringify(aoData));
+                    for (var i = 0; i < aoData.length; i++) {
+                        if (aoData[i].name == "iDisplayStart") {
+                            data.PageIndex = aoData[i].value;
+                        }
+                        if (aoData[i].name == "iDisplayLength") {
+                            data.PageSize = aoData[i].value;
+                        }
+                        if (aoData[i].name == "sEcho") {
+                            data.Draw = aoData[i].value;
+                        }
+                        if (aoData[i].name == "sSearch") {
+                            data.Search = aoData[i].value;
+                        }
+                    }
+                    alert(JSON.stringify(data));
+                    $.ajax({
+                        "type": "post",
+                        "url": sSource,
+                        "data": { "pageInfo": data },
+                        "success": function(resp) {
+                            fnCallback(resp);
+                        }
+                    });
+                },
+                oLanguage: {
+                    "sProcessing": "正在加载中......",
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "对不起，查询不到相关数据！",
+                    "sEmptyTable": "表中无数据存在！",
+                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                    "sSearchPlaceholder": "🔍 查找", //搜索框内占位符
+                    "sSearch": "", //搜索框前的字体
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "末页"
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div>
+    <table id="newstable" class="display" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>新闻Id</th>
+            <th>新闻标题</th>
+            <th>新闻内容</th>
+            <th>作者</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+</body>
+</html>

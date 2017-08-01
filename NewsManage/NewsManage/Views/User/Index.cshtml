@@ -1,0 +1,316 @@
+﻿
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+@section script
+{
+    @*<script src="~/Scripts/jstree.contextmenu.js"></script>*@
+    @*<script src="~/Scripts/jstree.dnd.js"></script>*@
+    @*<script src="~/Scripts/jstree.search.js"></script>*@
+    @*<script src="~/Scripts/jstree.sort.js"></script>*@
+    @*<script src="~/Scripts/jstree.state.js"></script>*@
+    @*<script src="~/Scripts/jstree.types.js"></script>*@
+    @*<script src="~/Scripts/UserTree.js"></script>*@
+    <link href="~/themes/default/style.css" rel="stylesheet"/>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            GetTree();
+            GetUserList();
+        });
+
+//获取部门树
+        function GetTree() {
+            $("#myTree").jstree({
+                    "core": {
+                        "multiple": false,
+                        "animation": 0,
+                        "check_callback": true,
+                        "themes": {},
+                        "data": {
+                            "url": "/User/GetDeptTree",
+                            "datatype": "json",
+                            "data": function(node) {
+                                return{ "id": node.id };
+                            },
+                            "success": function() {
+                            }
+                        }
+                    },
+                    "plugins": ["contextmenu", "dnd", "search", "state", "types", "wholerow"],
+                    "types": {
+                        "default": {
+                            "icon": "jstree-node-online" //glyphicon glyphicon-folder-close
+                        }
+                    }
+                })
+                .bind("select_node.jstree",
+                    function(event, data) {
+                        var inst = data.instance;
+                        var selectedNode = inst.get_node(data.selected);
+                        //alert(JSON.stringify(selectedNode.id));
+                        //alert(selectedNode.id);
+                        //alert(selectedNode.id.length)
+                        if (selectedNode.id.length === 3) {
+                            GetUserList(selectedNode.id);
+                        }
+                    });
+        }
+
+        //获取用户列表
+        function GetUserList(departId) {
+            //给隐藏域控件赋值
+            document.getElementById('DepartId').value = departId;
+            //ViewBag.DepartId = departId;
+            //alert(departId);
+            $("#usertable").dataTable({
+                "columns": [
+                    { "data": "UserId" },
+                    { "data": "Account" },
+                    { "data": "RealName" },
+                    { "data": "Role" },
+                    { "data": "DepartId" },
+                    { "data": "DeptName" }
+                ],
+                "bSort": true,
+                "columnDefs": [
+                    {
+                        "targets": [6],
+                        "data": "UserId",
+                        "render": function(data, type, full) { //data代表了该属性的值,full表示整行对象（可以通过full.userId获得该行的其他属性值）
+                            return "<a class='update' href='javascript:void(0)' onclick='UpdateUser(" + full.UserId +")'>编辑</a>";
+                        }
+                    },
+                    { "bVisible": false, "aTargets": [4] },
+                    { "bSortable": false, "aTargets": [1, 2, 3, 5] }
+                ],
+                "destroy": true,
+                "bProcessing": false,
+                "bServerSide": true,
+                "sAjaxSource": "/User/GetUerList", //url地址
+                "sDom": "Tflt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>",
+                drawCallback: function(backSettings) {
+                },
+                "fnServerData": function(sSource, aoData, fnCallback) {
+                    var data = {};
+                    //alert(JSON.stringify(aoData));
+                    for (var i = 0; i < aoData.length; i++) {
+                        if (aoData[i].name === "iDisplayStart") {
+                            data.PageIndex = aoData[i].value;
+                        }
+                        if (aoData[i].name === "iDisplayLength") {
+                            data.PageSize = aoData[i].value;
+                        }
+                        if (aoData[i].name === "sEcho") {
+                            data.Draw = aoData[i].value;
+                        }
+                        if (aoData[i].name === "sSearch") {
+                            data.Search = aoData[i].value;
+                        }
+                        if (aoData[i].name === "iSortCol_0") {
+                            data.SortCol = aoData[i].value;
+                        }
+                        if (aoData[i].name === "sSortDir_0") {
+                            data.SortDir = aoData[i].value;
+                        }
+                    }
+                    // alert(JSON.stringify(data));
+                    $.ajax({
+                        "type": "post",
+                        "url": sSource,
+                        "data": { "pageInfo": data, "deptid": departId },
+                        "success": function(resp) {
+                            fnCallback(resp);
+                        }
+                    });
+                },
+                oLanguage: {
+                    "sProcessing": "正在加载中......",
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "对不起，查询不到相关数据！",
+                    "sEmptyTable": "表中无数据存在！",
+                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                    "sSearchPlaceholder": " 查找", //搜索框内占位符
+                    "sSearch": "", //搜索框前的字体
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "末页"
+                    }
+                }
+            });
+        }
+
+        //弹出新增窗口
+        function newInfo() {
+            $("#myUsersLabel").text("新增");
+            $('#myUsers').modal();
+            //$('#addModal').modal('hide');
+        }
+
+//保存用户信息
+        function SaveUser() {
+            var urldata = "";
+            alert($('#UserId').val());
+            if ($('#UserId').val() !== "" && $('#UserId').val() != null) {
+                urldata = "/User/UpdateUser";
+            } else {
+                AddValidate();
+                urldata = "/User/AddUser";
+            }
+            var deptId = $('#DepartId').val();
+            alert(deptId);
+            $.ajax({
+                url: urldata,
+                type: "post",
+                data: $("form").serialize(),
+                success: function(data) {
+                    alert(data);
+                    if (data === "保存成功") {
+                        $("input[type=reset]").trigger("click");
+                        $('#UserId').val("");
+                        $('#myUsers').modal('hide');
+                        GetUserList(deptId);
+                    }
+                }
+            });
+
+        }
+
+//更新数据
+        function UpdateUser(userId) {
+            $.ajax({
+                url: "/User/GetSingleUser",
+                type: "post",
+                data: { "userId": userId },
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                    $("#myUsersLabel").text("修改");
+                    $('#myUsers').modal();
+                    $('#Account').val(data.Account);
+                    $('#RealName').val(data.RealName);
+                    $('#Password').val(data.Password);
+                    $('#Role').val(data.Role);
+                    $('#DepartId').val(data.DepartId);
+                    $('#UserId').val(data.UserId);
+                }
+            });
+            //$("#myUsersLabel").text("修改");
+            //$('#myUsers').modal();
+            //$("form").setData(datas);
+        }
+
+        function GetDeptSel() {
+            $.ajax({
+                url: "/Main/SelectNianDuXueQi", //   获取控制器URL地址
+                type: "get",
+                dataType: "json",
+                success: function(data) {
+                    $.each(data,
+                        function(i) { //data[i].ZhuanYeID 实际是data.Value 对应后台查询的id
+                            $("<option></option>").val(data[i].id).text(data[i].name).appendTo($("#DepartId"));
+                        });
+                }
+            });
+        }
+
+//数据验证
+        function AddValidate() {
+            $("#user-form").validate({
+                rules: {
+                    RealName: {
+                        maxlength: 50
+                    },
+                    Password: {
+                        required: true,
+                        minlength: 6
+                    },
+                    Role: {
+                        maxlength: 4
+                    },
+                    Account: {
+                        required: true,
+                        maxlength: 8,
+                        //异步验证
+                        remote: {
+                            url: "/News/CheckAccount", //后台数据处理地址
+                            type: "post", //数据发送的方式
+                            data: { //要传递的数据
+                                newsName: function() {
+                                    return $("#Account").val();
+                                }
+                            },
+                            dataType: "json"
+                        }
+                    }
+                },
+                messages: {
+                    RealName: "请输入新闻内容",
+                    Account: {
+                        required: "请输入用户名",
+                        maxlength: "用户名不能超过8个字",
+                        remote: "用户名不可用"
+                    },
+                    Password: {
+                        required: "请输入密码",
+                        minlength: "密码长度不能小于6"
+                    },
+                    Role: "长度不能超过4"
+                }
+            });
+        }
+
+        $("#myUsers").validate({
+            rules: {
+                RealName: {
+                    maxlength: 50
+                },
+                Password: {
+                    required: true,
+                    maxlength: 60
+                },
+                Role: {
+                    maxlength: 4
+                },
+                Account: {
+                    required: true,
+                    maxlength: 8,
+                    //异步验证
+                    remote: {
+                        url: "/News/CheckAccount", //后台数据处理地址
+                        type: "post", //数据发送的方式
+                        data: { //要传递的数据
+                            newsName: function() {
+                                return $("#Account").val();
+                            }
+                        },
+                        dataType: "json"
+                    }
+                }
+            },
+            messages: {
+                RealName: "请输入新闻内容",
+                Account: {
+                    required: "请输入用户名",
+                    maxlength: "用户名不能超过8个字",
+                    remote: "用户名不可用"
+                },
+                Password: {
+                    required: "请输入密码",
+                    maxlength: "密码长度不能超过60"
+                },
+                Role: "长度不能超过4"
+            }
+        });
+    </script>
+}
+<div class="col-md-3" id="myTree">
+</div>
+<div class="col-md-8"  >
+@Html.Partial("_UserPartial")
+</div>
