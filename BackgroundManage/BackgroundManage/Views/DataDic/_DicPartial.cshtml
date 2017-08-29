@@ -1,0 +1,42 @@
+﻿@model BackgroundEFManage.ViewModels.DataDicViewModel
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" id="myDicLabel">新增</h4>
+        </div>
+        <div class="modal-body" id="addUser">
+            <div class="form-group">
+                *@Html.LabelFor(model => model.DChName)
+                @Html.EditorFor(model => model.DChName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DChName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                *@Html.LabelFor(model => model.DEnName)
+                @Html.EditorFor(model => model.DEnName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DEnName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DReadonly)
+                @Html.DropDownListFor(model=>model.DReadonly, new List<SelectListItem> {
+                    new SelectListItem() { Text = "是", Value="true"},
+                    new SelectListItem() { Text = "否", Value="false"}
+                },new{ htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DReadonly, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description)
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+           
+                @Html.Hidden("Id")
+            </div>
+            <div class="modal-footer">
+                <input type="reset" name="reset" style="display: none;" />
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="this.form.reset(); "><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button type="button" id="btn_submit" class="btn btn-primary" onclick="SaveDataDic()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+﻿@model BackgroundEFManage.ViewModels.UserViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section script{
+    <script src="~/Scripts/userList.js"></script>
+    }
+<h4  style="color: #428bca">管理员管理</h4>
+<div class="row" style="margin-bottom: 15px;">
+    <div class="col-md-3">
+        <input type="text" name="Acount" class="form-control" id="Acount" placeholder="用户名">
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="Rname" class="form-control" id="Rname" placeholder="真实姓名">
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="Mail" class="form-control" id="Mail" placeholder="邮箱">
+    </div>
+    <div class="col-md-3">
+        <input type="button" class="btn btn-info" onclick="Search()" value="搜索"/>
+        <input type="button" class="btn btn-info" onclick="ShowModal()" value="新增"/>
+
+    </div>
+</div>
+<div class="row">
+    <table id="usertable" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>操作</th>
+                <th>用户Id</th>
+                <th>用户名</th>
+                <th>真实姓名</th>
+                <th>性别</th>
+                <th>手机号码</th>
+                <th>办公电话</th>
+                <th>邮箱</th>
+                <th>是否启用</th>
+                <th>创建人</th>
+                <th>创建时间</th>
+                <th>修改人</th>
+                <th>修改时间</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+    @*<input type="button" class="btn btn-info" onclick="ShowModal()" value="新增"/>*@
+   
+<form id="user-form">
+    <div class="modal fade" id="myUsers" tabindex="-1" role="dialog" aria-labelledby="myUsersLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myUsersLabel">新增</h4>
+                </div>
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span8">
+                            <div class="tabbable" id="tabs-45873">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                    <a href="#panel-272291" data-toggle="tab">管理员用户基本信息</a></li>
+                                    <li>
+                                    <a href="#panel-272292" data-toggle="tab">管理员拥有的角色选择</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="panel-272291" style="height: 600px;overflow:auto;">
+                                        <p>
+                                            <div class="modal-body" id="addUser">
+                                                <div class="form-group">
+                                                    *@Html.LabelFor(model => model.Account)
+                                                    @Html.EditorFor(model => model.Account, new {htmlAttributes = new {@class = "form-control", placeholder = "用户名"}})
+                                                    @Html.ValidationMessageFor(model => model.Account, "", new {@class = "text-danger"})
+                                                </div>
+                                                <div class="form-group">
+                                                    *@Html.LabelFor(model => model.RealName)
+                                                    @Html.EditorFor(model => model.RealName, new { htmlAttributes = new { @class = "form-control", placeholder = "真实姓名" } })
+                                                    @Html.ValidationMessageFor(model => model.RealName, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group">
+                                                    * @Html.LabelFor(model => model.Enable)
+                                                    @Html.DropDownListFor(model=>model.Enable,new List<SelectListItem> {
+                                                        new SelectListItem() { Text = "是", Value="true"},
+                                                        new SelectListItem() { Text = "否", Value="false"}
+                                                    },new{ htmlAttributes = new { @class = "form-control", required = true } })
+                                                    @Html.ValidationMessageFor(model => model.Enable, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group">
+                                                    *@Html.LabelFor(model => model.TelPhone)
+                                                    @Html.EditorFor(model => model.TelPhone, new {htmlAttributes = new {@class = "form-control", placeholder = "手机号码"}})
+                                                    @Html.ValidationMessageFor(model => model.TelPhone, "", new {@class = "text-danger"})
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.OfficePhone)
+                                                    @Html.EditorFor(model => model.OfficePhone, new { htmlAttributes = new { @class = "form-control", placeholder = "办公电话" }})
+                                                    @Html.ValidationMessageFor(model => model.OfficePhone, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group">
+                                                    *@Html.LabelFor(model => model.Email)
+                                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "邮箱" }})
+                                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                                @*<div class="form-group">*@
+                                               @Html.Hidden("Id")
+                                                @*<input id="Id" name="Id" type="hidden" />*@
+                                                @*  </div> *@
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <input type="reset" name="reset" style="display: none;" />
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="this.form.reset(); "><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                                <button type="button" id="btn_submit" class="btn btn-primary" onclick="SaveUser()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                            </div>
+                                        </p>
+                                    </div>
+                                    <div class="tab-pane" id="panel-272292" style="height: 600px;overflow:auto;">
+                                        <div id="AdminTree"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</form>

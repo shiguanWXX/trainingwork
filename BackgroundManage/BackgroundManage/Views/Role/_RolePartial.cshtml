@@ -1,0 +1,72 @@
+﻿@model BackgroundEFManage.ViewModels.RoleViewModel
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title" id="myRoleLabel">新增</h4>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span8">
+                <div class="tabbable" id="tabs-45873">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#panel-272291" data-toggle="tab">角色基本信息</a>
+                        </li>
+                        <li>
+                            <a href="#panel-272292" data-toggle="tab">管理员用户角色选择</a>
+                        </li>
+                        <li>
+                            <a href="#panel-272293" data-toggle="tab">模块角色</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="panel-272291" style="height:450px;overflow:auto;">
+                            <p>
+                                <div class="modal-body" id="addRole">
+                                    <div class="form-group">
+                                        *@Html.LabelFor(model => model.RName)
+                                        @Html.EditorFor(model => model.RName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.RName, "", new { @class = "text-danger" })
+               
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Code)
+                                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Description)
+
+                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+           
+                                        @Html.Hidden("Id")
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="reset" name="reset" style="display: none;" />
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="this.form.reset(); "><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                        <button type="button" id="btn_submit" class="btn btn-primary" onclick="SaveRole()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                    </div>
+
+                                </div>
+                            </p>
+                        </div>
+                        <div class="tab-pane" id="panel-272292"style="height:450px;overflow:auto;">
+                            <p>
+                                <div id="AdminTrees"></div>
+                            </p>
+                        </div>
+                        <div class="tab-pane" id="panel-272293" style="height:450px;overflow:auto;">
+                            <p>
+                                <div id="ModuleTree"></div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+</div>

@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section script
+{
+<script src="~/Scripts/moduleList.js"></script>
+}
+<h4>Index</h4>
+<div class="row">
+    <div class="col-md-3" id="moduleTree"></div>
+    <div class="col-md-9">
+        <input type="button" class="btn btn-info" onclick="ShowModal()" value="新增"/>
+       <table id="moduleTable" class="display" cellspacing="0" width="100%">
+           <thead>
+           <tr>
+               <th>操作</th>
+               <th>Id</th>
+               <th>中文名称</th>
+               <th>英文名称</th>
+               <th>URL</th>
+               <th>图标</th>
+               <th>排序</th>
+               <th>是否启用</th>
+               <th>是否显示</th>
+               <th>描述</th>
+               <th>FId</th>
+           </tr>
+           </thead>
+       </table>
+    </div>
+</div>
+<form id="module-form">
+    <div class="modal fade" id="myModule" tabindex="-1" role="dialog" aria-labelledby="myModuleLabel">
+    </div>
+</form>

@@ -1,0 +1,92 @@
+﻿@model BackgroundEFManage.ViewModels.ModuleViewModel
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" id="myModuleLabel">新增</h4>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span8">
+                    <div class="tabbable" id="tabs-45873">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-272291" data-toggle="tab">模块基本信息</a>
+                            </li>
+                            <li>
+                                <a href="#panel-272292" data-toggle="tab">模块角色</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-272291" style="height: 680px;overflow: auto">
+                                <p>
+                                    <div class="modal-body" id="addModule">
+                                        <div class="form-group">
+                                            *@Html.LabelFor(model => model.MChName)
+                                            @Html.EditorFor(model => model.MChName, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.MChName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.MEnName)
+                                            @Html.EditorFor(model => model.MEnName, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.MEnName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.URL)
+                                            @Html.EditorFor(model => model.URL, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.URL, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.MSort)
+                                            @Html.EditorFor(model => model.MSort, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.MSort, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            *@Html.LabelFor(model => model.Icon)
+                                            @Html.EditorFor(model => model.Icon, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Icon, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Enable)
+                                            @Html.DropDownListFor(model=>model.Enable,new List<SelectListItem> {
+                                                new SelectListItem() { Text = "是", Value="true"},
+                                                new SelectListItem() { Text = "否", Value="false"}
+                                            },new{ htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Enable, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Display)
+                                            @Html.DropDownListFor(model => model.Display, new List<SelectListItem> {
+                                                new SelectListItem() { Text = "是", Value="true"},
+                                                new SelectListItem() { Text = "否", Value="false"}
+                                            }, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Display, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Description)
+                                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+                                            @Html.Hidden("Id")
+                                            @Html.Hidden("FId")
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="reset" name="reset" style="display: none;" />
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="this.form.reset(); "><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                            <button type="button" id="btn_submit" class="btn btn-primary" onclick="SaveModule()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                                        </div>
+
+                                    </div>
+                                </p>
+                            </div>
+                            <div class="tab-pane" id="panel-272292" style="height: 680px;overflow: auto">
+                                <div id="ModuleTree"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

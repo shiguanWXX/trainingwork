@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("script",false)
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#39b3d7;border:none">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("后台管理系统", "Index", "Home", new { area = "" }, new { @class = "navbar-brand",style= "color:#ffffff;" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("主页", "Index", "User",new { style = "color:#ffffff;" })</li>
+                @*<li>@Html.ActionLink("关于", "About", "Home")</li>*@
+                <li>@Html.ActionLink("注销", "Logout", "Login", new { style = "color:#ffffff;" })</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    <div  class="container-fluid">
+        <div class="col-md-2">
+            <div class="container-after">
+                <nav class="navbar navbar-inverse" style="background-color:white;border:none;">
+                    @*设置反白，这样底色会是黑色*@
+                    <div class="navbar-collapse">
+                        @*它是说在视口的宽度小于 768px 的时候，将导航变成垂直方向*@
+                        <ul class="nav nav-pills nav-stacked" style="list-style: none;">
+                            <li>@Html.ActionLink("管理员管理", "Index", "User")</li>
+                            <li>@Html.ActionLink("数据字典管理", "Index", "DataDic")</li>
+                            <li>@Html.ActionLink("角色管理", "Index", "Role")</li>
+                            <li>@Html.ActionLink("模块管理", "Index", "Module")</li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+        </div>
+        <div class="col-md-10"> 
+            <div class="container-fluid">
+                @RenderBody()
+                
+            </div>
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
+            </footer>
+        </div>
+      
+    </div>
+
+
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)*@
+</body>
+</html>

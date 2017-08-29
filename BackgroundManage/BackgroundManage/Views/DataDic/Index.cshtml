@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+<script src="~/Scripts/datadicList.js"></script>
+}
+<h2>Index</h2>
+<div class="row" style="height: 300px; border-bottom: solid 1px #5bc0de; border-top: solid 1px #5bc0de;overflow:auto;">
+    <h4 style="color: #428bca">字典</h4>
+        <div class="col-md-3" id="myTree" ></div>
+    <div class="col-md-9" >
+        <input type="button" class="btn btn-info" onclick="ShowModal()" value="新增"/>
+        <table id="dictable" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <td>操作</td>
+                <td>Id</td>
+                <td>中文名称</td>
+                <td>英文名称</td>
+                <td>是否只读</td>
+                <td>描述</td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <h4  style="color: #428bca">字典详细</h4>
+    <input type="button" class="btn btn-info" onclick="ShowModalDetail()" value="新增"/>
+    <table id="detailtable" class="display" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <td>操作</td>
+            <td>Id</td>
+            <td>中文名称</td>
+            <td>英文名称</td>
+            <td>排序</td>
+            <td>是否启用</td>
+            <td>最后修改人</td>
+            <td>最后修改人</td>
+            <td>最后修改时间</td>
+            <td>描述</td>
+            <td>DId</td>
+        </tr>
+        </thead>
+    </table>
+</div>
+<form id="dic-form">
+    <div class="modal fade" id="myDic" tabindex="-1" role="dialog" aria-labelledby="myDicLabel">
+    </div>
+</form>
+<form id="detail-form">
+    <div class="modal fade" id="myDetail" tabindex="-1" role="dialog" aria-labelledby="myDetailLabel">
+    </div>
+</form>

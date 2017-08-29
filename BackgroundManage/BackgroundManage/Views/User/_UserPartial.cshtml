@@ -1,0 +1,59 @@
+﻿@model BackgroundEFManage.ViewModels.UserViewModel
+<div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myUsersLabel">新增</h4>
+                </div>
+                <div class="modal-body" id="addUser">
+                    <div class="form-group">
+                        *@Html.LabelFor(model => model.Account)
+                        @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", placeholder = "用户名" } })
+                        @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        *@Html.LabelFor(model => model.RealName)
+                        @Html.EditorFor(model => model.RealName, new { htmlAttributes = new { @class = "form-control", placeholder = "真实姓名" } })
+                        @Html.ValidationMessageFor(model => model.RealName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        * @Html.LabelFor(model => model.Enable)
+                        @Html.DropDownListFor(model=>model.Enable,new List<SelectListItem> {
+                            new SelectListItem() { Text = "是", Value="true"},
+                            new SelectListItem() { Text = "否", Value="false"}
+                        },new{ htmlAttributes = new { @class = "form-control", required = true } })
+                        @Html.ValidationMessageFor(model => model.Enable, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        *@Html.LabelFor(model => model.TelPhone)
+                        @Html.EditorFor(model => model.TelPhone, new {htmlAttributes = new {@class = "form-control", placeholder = "手机号码"}})
+                        @Html.ValidationMessageFor(model => model.TelPhone, "", new {@class = "text-danger"})
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OfficePhone)
+                        @Html.EditorFor(model => model.OfficePhone, new { htmlAttributes = new { @class = "form-control", placeholder = "办公电话" }})
+                        @Html.ValidationMessageFor(model => model.OfficePhone, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        *@Html.LabelFor(model => model.Email)
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "邮箱" }})
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                    @*<div class="form-group">*@
+                    @Html.Hidden("Id")
+                    @*@Html.Hidden("Password")
+                    @Html.Hidden("Sex")
+                    @Html.Hidden("Founder")
+                    @Html.Hidden("FoundTime")*@
+                    @*  </div> *@
+                </div>
+
+                <div class="modal-footer">
+                    <input type="reset" name="reset" style="display: none;" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="this.form.reset(); "><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="btn_submit" class="btn btn-primary" onclick="SaveUser()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                </div>
+
+            </div>
+        </div>
+  
